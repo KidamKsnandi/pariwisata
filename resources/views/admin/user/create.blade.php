@@ -53,7 +53,6 @@
                             </div>
                             <div class="form-group mt-3">
                                 <label for="">Konfirmasi Password</label>
-                                <div class="input-group input-group-outline">
                                     <input type="password" name="password_confirmation" autocomplete="off"
                                         class="form-control @error('password_confirmation') is-invalid @enderror">
                                     @error('password_confirmation')
@@ -61,7 +60,6 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
-                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Role</label>

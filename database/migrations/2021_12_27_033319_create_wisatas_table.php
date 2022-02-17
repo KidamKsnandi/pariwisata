@@ -22,7 +22,7 @@ class CreateWisatasTable extends Migration
             $table->text('deskripsi_wisata');
             $table->text('harga_tiket');
             $table->string('cover')->nullable();
-            $table->string('status')->nullable();
+            $table->string('status' )->nullable();
             $table->foreign('id_kategori')->references('id')->on('kategoris');
             $table->timestamps();
         });

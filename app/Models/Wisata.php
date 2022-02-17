@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Alert;
 use Session;
 
 class Wisata extends Model
@@ -11,7 +12,7 @@ class Wisata extends Model
     use HasFactory;
 
     protected $fillable = ['id_kategori','nama_wisata', 'lokasi', 'deskripsi_wisata',
-                            'harga_tiket', 'cover', 'status'];
+                            'harga_tiket', 'cover', 'status', 'embed_map'];
     public $timestamps = true;
 
     public function kategori() {
@@ -45,16 +46,17 @@ class Wisata extends Model
             //mengecek apakah penulis masih punya wisata
             if($wisata->galeri->count() > 0) {
                 // menyiapkan pesan error
-                $html = 'Wisata tidak bisa dihapus karena memilik Galeri : ';
-                $html .= '<ul>';
-                    foreach ($wisata->galeri as $data) {
-                        $html .= "<li>$data->gambar</li>";
-                    }
-                        $html .= '</ul>';
-                    Session::flash("flash_notification", [
-                        "level" => "danger",
-                        "message" => $html
-                    ]);
+                Alert::error('Gagal',' Data tidak bisa di hapus karena memiliki Galeri')->autoclose(3000);
+                // $html = 'Wisata tidak bisa dihapus karena memilik Galeri : ';
+                // $html .= '<ul>';
+                //     foreach ($wisata->galeri as $data) {
+                //         $html .= "<li>$data->gambar</li>";
+                //     }
+                //         $html .= '</ul>';
+                //     Session::flash("flash_notification", [
+                //         "level" => "danger",
+                //         "message" => $html
+                //     ]);
                     // membatalkan proses penghapusan
                     return false;
             }

@@ -61,14 +61,6 @@
                 </nav>
             </div>
         </div>
-        <div class="row align-items-center bg-white py-3 px-lg-5">
-            <div class="col-lg-4">
-                <a href="/" class="navbar-brand p-0 d-none d-lg-block">
-                    <h1 class="m-0 display-4 text-uppercase text-info">Pariwisata&nbsp;<span
-                            class="text-secondary font-weight-normal">Bandung</span></h1>
-                </a>
-            </div>
-        </div>
     </div>
     <!-- Topbar End -->
 
@@ -145,6 +137,7 @@
             <div class="col-lg-4 col-md-6 mb-5">
                 <h5 class="mb-4 text-white text-uppercase font-weight-bold">Update Selanjutnya</h5>
                 <p class="font-weight-medium">Fitur Komentar dan Rating</p>
+                <p class="font-weight-medium">Maps</p>
                 <p class="font-weight-medium">Akan Datang :)</p>
             </div>
         </div>

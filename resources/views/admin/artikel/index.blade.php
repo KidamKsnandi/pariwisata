@@ -11,6 +11,8 @@
             $('#artikel').DataTable();
         });
     </script>
+    <script src="{{ asset('assets/js/sweetalert2.js') }}"></script>
+    <script src="{{ asset('assets/js/delete.js') }}"></script>
 @endsection
 
 @section('content')
@@ -60,8 +62,7 @@
                                                     <a href="/admin/article/lihat/{{ $data->id }}"
                                                         class="btn btn-outline-warning"><i class="fa fa-eye"></i>
                                                         Lihat</a>
-                                                    <button type="submit" class="btn btn-outline-danger"
-                                                        onclick="return confirm('Apakah anda yakin ingin menghapus?')"><i
+                                                    <button type="submit" class="btn btn-outline-danger delete-confirm"><i
                                                             class="fa fa-trash-alt"></i> Hapus</button>
                                                 </form>
                                             </td>

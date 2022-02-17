@@ -30,47 +30,6 @@
 </head>
 
 <body>
-    <!-- Topbar Start -->
-    <div class="container-fluid d-none d-lg-block">
-        <div class="row align-items-center bg-dark px-lg-5">
-            <div class="col-lg-9">
-                <nav class="navbar navbar-expand-sm bg-dark p-0">
-                    <ul class="navbar-nav ml-n2">
-                        <li class="nav-item border-right border-secondary">
-                            <small class="nav-link text-body small">{{ date('l, d M Y') }}</small>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-body small" href="/login">Login</a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-            <div class="col-lg-3 text-right d-none d-md-block">
-                <nav class="navbar navbar-expand-sm bg-dark p-0">
-                    <ul class="navbar-nav ml-auto mr-n2">
-                        <li class="nav-item">
-                            <a class="nav-link text-body" href="#"><small class="fab fa-twitter"></small></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-body" href="#"><small class="fab fa-facebook-f"></small></a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-body" href="#"><small class="fab fa-instagram"></small></a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-        <div class="row align-items-center bg-white py-3 px-lg-5">
-            <div class="col-lg-4">
-                <a href="/" class="navbar-brand p-0 d-none d-lg-block">
-                    <h1 class="m-0 display-4 text-uppercase text-info">Pariwisata&nbsp;<span
-                            class="text-secondary font-weight-normal">Bandung</span></h1>
-                </a>
-            </div>
-        </div>
-    </div>
-    <!-- Topbar End -->
 
     <!-- Navbar Start -->
     <div class="container-fluid p-0">
@@ -122,16 +81,22 @@
                     Indonesia</p>
                 <p class="font-weight-medium"><i class="fa fa-phone-alt mr-2"></i>+62 838 074 64449</p>
                 <p class="font-weight-medium"><i class="fa fa-envelope mr-2"></i>kidamkusnandi606@gmail.com</p>
-            </div>
-            <div class="col-lg-4 col-md-6 mb-5">
                 <h6 class="mt-4 mb-3 text-white text-uppercase font-weight-bold">Follow Us</h6>
                 <div class="d-flex justify-content-start">
-                    <a class="btn btn-lg btn-secondary btn-lg-square mr-2" href="#"><i class="fab fa-twitter"></i></a>
+                    <a class="btn btn-lg btn-secondary btn-lg-square mr-2" href="https://twitter.com/ksnnd06"><i
+                            class="fab fa-twitter"></i></a>
                     <a class="btn btn-lg btn-secondary btn-lg-square mr-2"
-                        href="https://www.facebook.com/kidamkusnandi/"><i class="fab fa-facebook-f"></i></a>
+                        href="https://web.facebook.com/kidnan.creativity/"><i class="fab fa-facebook-f"></i></a>
                     <a class="btn btn-lg btn-secondary btn-lg-square mr-2"
                         href="https://www.instagram.com/kidamkusnandi06/"><i class="fab fa-instagram"></i></a>
                 </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mb-5">
+                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Update Selanjutnya</h5>
+                <p class="font-weight-medium">Fitur Komentar dan Rating</p>
+                <p class="font-weight-medium">Maps</p>
+                <p class="font-weight-medium">Akan Datang :)</p>
             </div>
         </div>
     </div>
@@ -163,6 +128,7 @@
     <script type="text/javascript">
         $("[data-fancybox]").fancybox({});
     </script>
+    @yield('js')
 </body>
 
 </html>

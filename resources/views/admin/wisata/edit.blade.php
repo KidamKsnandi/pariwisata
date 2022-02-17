@@ -114,7 +114,8 @@
                                     <label><input type="checkbox"
                                             {{ $status[0] == 'Populer' || isset($status[1]) == 'Populer' ? 'checked' : '' }}
                                             name="status[]" value="Populer">&nbsp;Populer</label>
-                                    @error('status.*') <span class="invalid-feedback" role="alert">
+                                    @error('status.*')
+                                        <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror

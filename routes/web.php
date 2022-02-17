@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ArtikelController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DependentDropdownController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\GaleriController;
 use App\Http\Controllers\HomeController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WisataController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,9 +33,11 @@ Route::get('/home', function () {
 
 Route::get('/logout', [LoginController::class, 'logout']);
 
-Route::get('/single', function () {
-    return view('coba.single');
-});
+Route::get('/tes', [HomeController::class, 'tes']);
+Route::get('provinces', [DependentDropdownController::class, 'provinces'])->name('provinces');
+Route::get('cities', [DependentDropdownController::class, 'cities'])->name('cities');
+Route::get('districts', [DependentDropdownController::class, 'districts'])->name('districts');
+Route::get('villages', [DependentDropdownController::class, 'villages'])->name('villages');
 
 // Route Pengunjung
 Route::get('/', [FrontController::class, 'welcome']);

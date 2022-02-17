@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Alert;
 use App\Models\Artikel;
 use App\Models\Kategori;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Session;
 
 class HomeController extends Controller
 {
@@ -61,10 +61,11 @@ class HomeController extends Controller
             $artikel->status = $request->status;
         }
         $artikel->save();
-        Session::flash("flash_notification", [
-            "level" => "success",
-            "message" => "Berhasil Menyimpan $artikel->nama_artikel",
-        ]);
+        Alert::success('Mantap', 'Berhasil Mengubah Data')->autoclose(3000);
+        // Session::flash("flash_notification", [
+        //     "level" => "success",
+        //     "message" => "Berhasil Menyimpan $artikel->nama_artikel",
+        // ]);
         return redirect('admin/article');
     }
 
@@ -73,11 +74,18 @@ class HomeController extends Controller
         $artikel = Artikel::findOrFail($id);
         $artikel->delete();
         $artikel->deleteCover();
-        Session::flash("flash_notification", [
-            "level" => "success",
-            "message" => "Berhasil Menghapus Artikel",
-        ]);
+        Alert::success('Mantap', 'Berhasil Menghapus Data')->autoclose(3000);
+
+        // Session::flash("flash_notification", [
+        //     "level" => "success",
+        //     "message" => "Berhasil Menghapus Artikel",
+        // ]);
         return redirect('admin/article');
+    }
+
+    public function tes()
+    {
+        return view('test');
     }
 
 }

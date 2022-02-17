@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Alert;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
-use Session;
 use Str;
+use Validator;
 
 class KategoriController extends Controller
 {
@@ -38,15 +39,27 @@ class KategoriController extends Controller
      */
     public function store(Request $request)
     {
-        $messages = [
+        $message = [
             'required' => 'Data tidak boleh kosong!! wajib diisi ngab!!!',
             'unique' => 'Data sudah ada!! ganti yang lain ngab!!!',
         ];
 
-        $validated = $request->validate([
+        $rules = [
             'nama_kategori' => 'required|unique:kategoris',
             'nama_kategori.*' => 'required',
-        ], $messages);
+        ];
+
+        $validation = Validator::make($request->all(), $rules, $message);
+        if ($validation->fails()) {
+            Alert::error('Oops', 'Data yang anda input tidak valid, silahkan di ulang')->autoclose(2000);
+            return back()->withErrors($validation)->withInput();
+        }
+
+        // $validated = $request->validate([
+        //     'nama_kategori' => 'required|unique:kategoris',
+        //     'nama_kategori.*' => 'required',
+        // ], $messages);
+
         // $kategori = new Kategori();
         // $kategori->nama_kategori = $request->nama_kategori;
         // $slug = Str::slug($kategori->nama_kategori);
@@ -62,10 +75,12 @@ class KategoriController extends Controller
                 $kategori->save();
             }
         }
-        Session::flash("flash_notification", [
-            "level" => "success",
-            "message" => "Berhasil Menyimpan Kategori Baru",
-        ]);
+        Alert::success('Mantap', 'Berhasil Menyimpan Data Baru')->autoclose(3000);
+
+        // Session::flash("flash_notification", [
+        //     "level" => "success",
+        //     "message" => "Berhasil Menyimpan Kategori Baru",
+        // ]);
         return redirect()->route('kategori.index');
     }
 
@@ -102,23 +117,35 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $messages = [
+        $message = [
             'required' => 'Data tidak boleh kosong!! wajib diisi ngab!!!',
             'unique' => 'Data sudah ada!! ganti yang lain ngab!!',
         ];
 
-        // Validasi data
-        $validated = $request->validate([
+        $rules = [
             'nama_kategori' => 'required|unique:kategoris',
-        ], $messages);
+        ];
+
+        // Validasi data
+        $validation = Validator::make($request->all(), $rules, $message);
+        if ($validation->fails()) {
+            Alert::error('Oops', 'Data yang anda input tidak valid, silahkan di ulang')->autoclose(2000);
+            return back()->withErrors($validation)->withInput();
+        }
+
+        // $validated = $request->validate([
+        //     'nama_kategori' => 'required|unique:kategoris',
+        // ], $messages);
 
         $kategori = Kategori::findOrFail($id);
         $kategori->nama_kategori = $request->nama_kategori;
         $kategori->save();
-        Session::flash("flash_notification", [
-            "level" => "success",
-            "message" => "Berhasil Menyimpan $kategori->nama_kategori",
-        ]);
+        Alert::success('Mantap', 'Berhasil Menyimpan Data Baru')->autoclose(3000);
+
+        // Session::flash("flash_notification", [
+        //     "level" => "success",
+        //     "message" => "Berhasil Menyimpan $kategori->nama_kategori",
+        // ]);
         return redirect()->route('kategori.index');
     }
 
@@ -132,10 +159,11 @@ class KategoriController extends Controller
     {
 
         if (!Kategori::destroy($id)) {return redirect()->back();} else {
-            Session::flash("flash_notification", [
-                "level" => "success",
-                "message" => "Berhasil Menghapus ",
-            ]);
+            // Session::flash("flash_notification", [
+            //     "level" => "success",
+            //     "message" => "Berhasil Menghapus ",
+            // ]);
+            Alert::success('Mantap', 'Data Berhasil dihapus')->autoclose(3000);
             return redirect()->route('kategori.index');
         }
     }

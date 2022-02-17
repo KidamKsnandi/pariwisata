@@ -1,5 +1,25 @@
 @extends('layouts.partials.link')
 
+@section('js')
+<script>
+    /**
+    *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+    *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables    */
+    /*
+    var disqus_config = function () {
+    this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = 'https://pariwisata-5.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+</script>
+@endsection
+
 @section('content')
     <div class="container-fluid mt-5 mb-3 pt-3">
         <div class="container">
@@ -24,7 +44,10 @@
                             </h1>
                             <p>{!! $wisata->deskripsi_wisata !!}</p>
                             <h4>Harga Tiket : </h4>
-                            <p>{!! $wisata->harga_tiket !!}</p>
+                            <p>{!! $wisata->harga_tiket !!}</p><br>
+                            <center><iframe src="https://www.google.com/maps/embed?{{ $wisata->embed_map }}" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe></center>
+                            <p><div id="disqus_thread"></div>
+                            </p>
                         </div>
                     </div>
                     <!-- News Detail End -->

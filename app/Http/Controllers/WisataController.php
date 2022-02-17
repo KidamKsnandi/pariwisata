@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use Alert;
 use App\Models\Kategori;
 use App\Models\Wisata;
 use Illuminate\Http\Request;
 use Session;
 use Str;
+use Validator;
 
 class WisataController extends Controller
 {
@@ -24,39 +26,28 @@ class WisataController extends Controller
 
     public function store(Request $request)
     {
-        $messages = [
+        $message = [
             'required' => 'Data tidak boleh kosong!! wajib diisi ngab!!!',
+            'min' => 'Data harus diisi minimal :min karakter ya ngab!!!',
         ];
 
-        $request->validate([
+        $rules = [
             'nama_wisata' => 'required|unique:wisatas',
             'lokasi' => 'required',
             'cover' => 'required',
+            'embed_map' => 'required',
             'nama_wisata.*' => 'required',
-            'lokasi.*' => 'required',
+            'lokasi.*' => 'required|min:10',
             'cover.*' => 'required|image|max:2048',
-        ], $messages);
+            'embed_map.*' => 'required|min:20',
+        ];
 
-        // $wisata = new Wisata();
-        // $wisata->nama_wisata = $request->nama_wisata;
-        // $slug = Str::slug($wisata->nama_wisata);
-        // $wisata->slug = $slug;
-        // $wisata->id_kategori = $request->id_kategori;
-        // $wisata->lokasi = $request->lokasi;
-        // $wisata->deskripsi_wisata = "Belum Ada Deskripsi, Maaf :( ";
-        // if($request->harga_tiket ==  "0") {
-        //     $wisata->harga_tiket = "Gratis";
-        // } else {
-        // $wisata->harga_tiket = $request->harga_tiket;
-        // }
-        // if ($request->hasFile('cover')) {
-        //     $image = $request->file('cover');
-        //     $name = rand(1000, 9999) . $image->getClientOriginalName();
-        //     $image->move('images/cover/', $name);
-        //     $wisata->cover = $name;
-        // }
-        // $wisata->status = $request->status;
-        // $wisata->save();
+        $validation = Validator::make($request->all(), $rules, $message);
+        if ($validation->fails()) {
+            Alert::error('Oops', 'Data yang anda input tidak valid, silahkan di ulang')->autoclose(2000);
+            return back()->withErrors($validation)->withInput();
+        }
+
         if (is_countable($request['nama_wisata']) && count($request['nama_wisata']) > 0) {
             foreach ($request['nama_wisata'] as $item => $value) {
                 // $data = array(
@@ -84,13 +75,15 @@ class WisataController extends Controller
                     $wisata->cover = $name;
                 }
                 $wisata->status = "Normal";
+                $wisata->embed_map = $request['embed_map'][$item];
                 $wisata->save();
             }
         }
-        Session::flash("flash_notification", [
-            "level" => "success",
-            "message" => "Berhasil Menyimpan Wisata Baru",
-        ]);
+        // Session::flash("flash_notification", [
+        //     "level" => "success",
+        //     "message" => "Berhasil Menyimpan Wisata Baru",
+        // ]);
+        Alert::success('Mantap', 'Berhasil Menyimpan $wisata->nama_wisata')->autoclose(3000);
         return redirect()->route('wisata.index');
     }
 
@@ -102,14 +95,24 @@ class WisataController extends Controller
 
     public function simpandeskripsi(Request $request, Wisata $wisata)
     {
-        $messages = [
+        $message = [
             'required' => 'Data tidak boleh kosong!! wajib diisi ngab!!!',
             'min' => ':attribute harus diisi minimal :min karakter ya ngab!!!',
         ];
 
-        $request->validate([
+        $rules = [
             'deskripsi_wisata' => 'required|min:100',
-        ], $messages);
+        ];
+
+        // $request->validate([
+        //     'deskripsi_wisata' => 'required|min:100',
+        // ], $messages);
+
+        $validation = Validator::make($request->all(), $rules, $message);
+        if ($validation->fails()) {
+            Alert::error('Oops', 'Data yang anda input tidak valid, silahkan di ulang')->autoclose(2000);
+            return back()->withErrors($validation)->withInput();
+        }
 
         $wisata = Wisata::findOrFail($wisata->id);
         $wisata->deskripsi_wisata = $request->deskripsi_wisata;
@@ -129,13 +132,24 @@ class WisataController extends Controller
 
     public function simpanharga(Request $request, Wisata $wisata)
     {
-        $messages = [
+        $message = [
             'required' => 'Data tidak boleh kosong!! wajib diisi ngab!!!',
+            'min' => ':attribute harus diisi minimal :min karakter ya ngab!!!',
         ];
 
-        $request->validate([
-            'harga_tiket' => 'required|string',
-        ], $messages);
+        $rules = [
+            'harga_tiket' => 'required|min:50',
+        ];
+
+        // $request->validate([
+        //     'harga_tiket' => 'required|min:50',
+        // ], $messages);
+
+        $validation = Validator::make($request->all(), $rules, $message);
+        if ($validation->fails()) {
+            Alert::error('Oops', 'Data yang anda input tidak valid, silahkan di ulang')->autoclose(2000);
+            return back()->withErrors($validation)->withInput();
+        }
 
         $wisata = Wisata::findOrFail($wisata->id);
         $wisata->harga_tiket = $request->harga_tiket;
@@ -157,18 +171,33 @@ class WisataController extends Controller
 
     public function update(Request $request, $id)
     {
-        $messages = [
+        $message = [
             'required' => 'Data tidak boleh kosong!! wajib diisi ngab!!!',
-            'min' => ':attribute minimal :min karakter ya ngab!!',
+            'deskripsi_wisata.min' => ':attribute minimal :min karakter ya ngab!!',
+            'harga_tiket.min' => ':attribute minimal :min karakter ya ngab!!',
         ];
 
-        $request->validate([
+        $rules = [
             'nama_wisata' => 'required',
             'id_kategori' => 'required',
             'lokasi' => 'required',
             'deskripsi_wisata' => 'required|min:100',
-            'harga_tiket' => 'required',
-        ], $messages);
+            'harga_tiket' => 'required|min:50',
+        ];
+
+        // $request->validate([
+        //     'nama_wisata' => 'required',
+        //     'id_kategori' => 'required',
+        //     'lokasi' => 'required',
+        //     'deskripsi_wisata' => 'required|min:100',
+        //     'harga_tiket' => 'required|min:50',
+        // ], $messages);
+
+        $validation = Validator::make($request->all(), $rules, $message);
+        if ($validation->fails()) {
+            Alert::error('Oops', 'Data yang anda input tidak valid, silahkan di ulang')->autoclose(2000);
+            return back()->withErrors($validation)->withInput();
+        }
 
         $wisata = Wisata::findOrFail($id);
         $wisata->nama_wisata = $request->nama_wisata;
@@ -192,10 +221,11 @@ class WisataController extends Controller
             $wisata->status = $request->status;
         }
         $wisata->save();
-        Session::flash("flash_notification", [
-            "level" => "success",
-            "message" => "Berhasil Menyimpan $wisata->nama_wisata",
-        ]);
+        // Session::flash("flash_notification", [
+        //     "level" => "success",
+        //     "message" => "Berhasil Menyimpan $wisata->nama_wisata",
+        // ]);
+        Alert::success('Mantap', 'Berhasil Menyimpan $wisata->nama_wisata')->autoclose(3000);
         return redirect()->route('wisata.index');
     }
 
@@ -204,10 +234,11 @@ class WisataController extends Controller
         $wisata = Wisata::findOrFail($id);
         if (!Wisata::destroy($id)) {return redirect()->back();} else {
             $wisata->deleteCover();
-            Session::flash("flash_notification", [
-                "level" => "success",
-                "message" => "Berhasil Menghapus ",
-            ]);
+            // Session::flash("flash_notification", [
+            //     "level" => "success",
+            //     "message" => "Berhasil Menghapus ",
+            // ]);
+            Alert::success('Mantap', 'Data Berhasil dihapus')->autoclose(3000);
             return redirect()->route('wisata.index');
         }
     }

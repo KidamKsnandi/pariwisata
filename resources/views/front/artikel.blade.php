@@ -30,7 +30,7 @@
                                                 <small>{{ $data->created_at->format('d, M Y') }}</small>
                                             </div>
                                             <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold"
-                                                href="/{{ $data->slug }}/selengkapnya">{{ $data->judul }}</a>
+                                                href="/{{ $data->slug }}/selengkapnya">{{ substr($data->judul, 0, 58) }}...</a>
                                             <p class="m-0">{!! substr($data->konten, 0, 100) !!}....</p>
                                         </div>
                                     </div>
@@ -60,7 +60,7 @@
                                             <div
                                                 class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
                                                 <a class="h6 m-0 text-secondary text-uppercase font-weight-bold"
-                                                    href="/{{ $data->slug }}/selengkapnya">{{ substr($data->judul, 0,50) }}...</a>
+                                                    href="/{{ $data->slug }}/selengkapnya">{{ substr($data->judul, 0,40) }}...</a>
                                                 <div class="mt-3">
                                                     <small class="text-body">Author : {{ $data->user->name }}</small>
                                                 </div>

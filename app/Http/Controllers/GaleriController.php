@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Alert;
+use App\Http\Controllers\Controller;
 use App\Models\Galeri;
-use App\Models\Kategori;
 use App\Models\Wisata;
 use Illuminate\Http\Request;
-use Session;
-use App\Http\Controllers\Controller;
+use Validator;
 
 class GaleriController extends Controller
 {
@@ -17,12 +17,11 @@ class GaleriController extends Controller
         return view('admin.galeri.all', compact('galeri'));
     }
 
-
     public function index(Wisata $wisata)
     {
         $wisata = Wisata::find($wisata->id);
         $galeri = Galeri::where('id_wisata', $wisata->id)->get();
-        return view('admin.galeri.index', compact('wisata','galeri'));
+        return view('admin.galeri.index', compact('wisata', 'galeri'));
     }
 
     /**
@@ -44,15 +43,26 @@ class GaleriController extends Controller
      */
     public function store(Request $request, Wisata $wisata)
     {
-        $messages = [
+        $message = [
             'required' => 'Data tidak boleh kosong!! wajib diisi ngab!!!',
-            'image' => 'File harus image/foto ngab!!!'
+            'image' => 'File harus image/foto ngab!!!',
         ];
 
-        $validated = $request->validate([
-            'gambar' => 'required',
+        $rules = [
+            'gambar' => 'required|',
             'gambar.*' => 'required|image|max:2048',
-        ], $messages);
+        ];
+
+        $validation = Validator::make($request->all(), $rules, $message);
+        if ($validation->fails()) {
+            Alert::error('Oops', 'Data yang anda input tidak valid, silahkan di ulang')->autoclose(2000);
+            return back()->withErrors($validation)->withInput();
+        }
+
+        // $validated = $request->validate([
+        //     'gambar' => 'required',
+        //     'gambar.*' => 'required|image|max:2048',
+        // ], $messages);
 
         // if ($request->hasFile('gambar')) {
         //     $image = $request->file('gambar');
@@ -65,7 +75,7 @@ class GaleriController extends Controller
             $files = [];
             foreach ($request->file('gambar') as $file) {
                 if ($file->isValid()) {
-                    $gambar = rand(1000, 9999) . $file->getClientOriginalName();;
+                    $gambar = rand(1000, 9999) . $file->getClientOriginalName();
                     $file->move(public_path('images/galeri/'), $gambar);
                     $files[] = [
                         'id_wisata' => $wisata->id,
@@ -75,11 +85,12 @@ class GaleriController extends Controller
             }
             Galeri::insert($files);
         }
-        Session::flash("flash_notification", [
-                        "level"=>"success",
-                        "message"=>"Berhasil Menyimpan Gambar di Galeri"
-                        ]);
-        return redirect('/admin/'.$wisata->slug.'/galeri');
+        Alert::success('Mantap', 'Berhasil Menyimpan Data Baru')->autoclose(3000);
+        // Session::flash("flash_notification", [
+        //                 "level"=>"success",
+        //                 "message"=>"Berhasil Menyimpan Gambar di Galeri"
+        //                 ]);
+        return redirect('/admin/' . $wisata->slug . '/galeri');
     }
 
     /**
@@ -115,11 +126,26 @@ class GaleriController extends Controller
      * @param  \App\Models\Galeri  $galeri
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Wisata $wisata, $id )
+    public function update(Request $request, Wisata $wisata, $id)
     {
-        $validated = $request->validate([
+        $message = [
+            'image' => 'File harus image/foto ngab!!!',
+            'max' => 'Maksimal gambar harus 2 mb',
+        ];
+
+        $rules = [
             'gambar' => 'image|max:2049',
-        ]);
+        ];
+
+        $validation = Validator::make($request->all(), $rules, $message);
+        if ($validation->fails()) {
+            Alert::error('Oops', 'Data yang anda input tidak valid, silahkan di ulang')->autoclose(2000);
+            return back()->withErrors($validation)->withInput();
+        }
+
+        // $validated = $request->validate([
+        //     'gambar' => 'image|max:2049',
+        // ]);
 
         $galeri = Galeri::findOrFail($id);
         $galeri->id_wisata = $wisata->id;
@@ -132,11 +158,12 @@ class GaleriController extends Controller
             $galeri->gambar = $name;
         }
         $galeri->save();
-        Session::flash("flash_notification", [
-                        "level"=>"success",
-                        "message"=>"Berhasil Menyimpan Gambar di Galeri"
-                        ]);
-        return redirect('/admin/'.$wisata->slug.'/galeri');
+        Alert::success('Mantap', 'Berhasil Menyimpan Data Baru')->autoclose(3000);
+        // Session::flash("flash_notification", [
+        //                 "level"=>"success",
+        //                 "message"=>"Berhasil Menyimpan Gambar di Galeri"
+        //                 ]);
+        return redirect('/admin/' . $wisata->slug . '/galeri');
     }
 
     /**
@@ -151,10 +178,11 @@ class GaleriController extends Controller
         $galeri = Galeri::findOrFail($id);
         $galeri->delete();
         $galeri->deleteGaleri();
-        Session::flash("flash_notification", [
-                        "level"=>"success",
-                        "message"=>"Berhasil Menghapus Gambar di Galeri $wisata->nama_wisata"
-                        ]);
+        Alert::success('Mantap', 'Berhasil Menghapus Data')->autoclose(3000);
+        // Session::flash("flash_notification", [
+        //                 "level"=>"success",
+        //                 "message"=>"Berhasil Menghapus Gambar di Galeri $wisata->nama_wisata"
+        //                 ]);
         return redirect()->back();
     }
 }

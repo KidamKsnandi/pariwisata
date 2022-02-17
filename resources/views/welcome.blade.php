@@ -1,3 +1,12 @@
+<?php
+$filetext = 'webcounter.txt';
+$counter = file($filetext);
+$visitor = $counter[0];
+$visitor++;
+$file = fopen($filetext, 'w');
+fwrite($file, $visitor);
+fclose($file);
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,6 +39,7 @@
     <style>
         body {
             background-image: url('images/bg1.jpg');
+            /* background: pink; */
             background-repeat: no-repeat;
             background-size: cover;
         }
@@ -52,7 +62,10 @@
                             <small class="nav-link text-body small">{{ date('l, d M Y') }}</small>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-body small" href="/login">Login</a>
+                            <a class="nav-link text-body small" href="/login"><i class="fa fa-user"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <small class="nav-link text-body small">Pengunjung : {{ $visitor }}</small>
                         </li>
                     </ul>
                 </nav>
@@ -147,6 +160,7 @@
             <div class="col-lg-4 col-md-6 mb-5">
                 <h5 class="mb-4 text-white text-uppercase font-weight-bold">Update Selanjutnya</h5>
                 <p class="font-weight-medium">Fitur Komentar dan Rating</p>
+                <p class="font-weight-medium">Maps</p>
                 <p class="font-weight-medium">Akan Datang :)</p>
             </div>
         </div>

@@ -1,5 +1,10 @@
 @extends('layouts.admin')
 
+@section('js')
+    <script src="{{ asset('assets/js/sweetalert2.js') }}"></script>
+    <script src="{{ asset('assets/js/delete.js') }}"></script>
+@endsection
+
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
@@ -16,10 +21,12 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                        <h3 class="col-sm-10">Galeri {{ $wisata->nama_wisata }}</h3>
-                        <a href="javascript:history.back()" class="fa fa-arrow-left btn btn-secondry" class="float:right;">&nbsp;Kembali</a>
+                            <h3 class="col-sm-10">Galeri {{ $wisata->nama_wisata }}</h3>
+                            <a href="javascript:history.back()" class="fa fa-arrow-left btn btn-secondry"
+                                class="float:right;">&nbsp;Kembali</a>
                         </div>
-                        <a href="galeri/create" class="btn btn-sm btn-info float-right text-white mt-3"><i class="fa fa-plus"></i> Tambah Data Galeri</a>
+                        <a href="galeri/create" class="btn btn-sm btn-info float-right text-white mt-3"><i
+                                class="fa fa-plus"></i> Tambah Data Galeri</a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -38,12 +45,12 @@
                                         <td>
                                             <form action="galeri/hapus/{{ $data->id }}" method="POST">
                                                 @csrf
-                                                <a href="galeri/edit/{{ $data->id }}"
-                                                    class="btn btn-outline-info"><i class="fa fa-edit"></i> Edit</a>
-                                                <a href="galeri/show/{{ $data->id }}"
-                                                    class="btn btn-outline-warning"><i class="fa fa-eye"></i> Show</a>
-                                                <button type="submit" class="btn btn-outline-danger"
-                                                    onclick="return confirm('Apakah anda yakin ingin menghapus?')"><i class="fa fa-trash-alt"></i> Hapus</button>
+                                                <a href="galeri/edit/{{ $data->id }}" class="btn btn-outline-info"><i
+                                                        class="fa fa-edit"></i> Edit</a>
+                                                <a href="galeri/show/{{ $data->id }}" class="btn btn-outline-warning"><i
+                                                        class="fa fa-eye"></i> Show</a>
+                                                <button type="submit" class="btn btn-outline-danger delete-confirm"><i
+                                                        class="fa fa-trash-alt"></i> Hapus</button>
                                             </form>
                                         </td>
                                     </tr>
